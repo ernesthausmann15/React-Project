@@ -1,10 +1,18 @@
+interface FilterBarProps {
+  query: string;
+  onQueryChange: (value: string) => void;
+  sort: string;
+  onSortChange: (value: string) => void;
+  resultCount: number;
+}
+
 export default function FilterBar({
   query,
   onQueryChange,
   sort,
   onSortChange,
   resultCount,
-}) {
+}: FilterBarProps) {
   return (
     <div className="filter-bar">
       <label className="search-field">
