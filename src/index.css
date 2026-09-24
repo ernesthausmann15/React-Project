@@ -94,6 +94,7 @@ a {
 }
 .app-shell {
   min-height: 100vh;
+  color: var(--text);
   background: var(--bg);
   transition:
     background 0.3s,
