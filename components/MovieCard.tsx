@@ -43,17 +43,17 @@ export default function MovieCard({ movie, onSelect }: MovieCardProps) {
           />
         </div>
         <div className="movie-card-copy px-0 pb-1 pt-3">
-          <h3 className="m-0 text-[0.94rem] font-semibold leading-snug text-white">
+          <h3 className="m-0 text-[0.94rem] font-semibold leading-snug text-[var(--text)]">
             {movie.Title}
           </h3>
-          <p className="mt-1.5 font-mono text-[0.72rem] font-medium text-[var(--muted)]">
+          <p className="mt-1.5 font-mono text-[0.72rem] font-medium text-[var(--text-muted)]">
             {movie.Year}
           </p>
         </div>
       </Link>
       {onSelect ? (
         <button
-          className="card-action border-0 bg-transparent p-0 font-mono text-[0.68rem] font-medium uppercase tracking-wide text-accent transition-opacity duration-300 hover:opacity-90"
+          className="card-action border-0 bg-transparent p-0 font-mono text-[0.68rem] font-medium uppercase tracking-wide text-[var(--accent-text)] transition-opacity duration-300 hover:opacity-90"
           type="button"
           onClick={() => onSelect(movie)}
         >

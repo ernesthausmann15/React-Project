@@ -67,14 +67,15 @@ export default function HomePage() {
   }
 
   return (
-    <main className="home-page page-shell">
-      <section className="hero-section">
+    <main className="home-page page-shell relative z-10">
+      <section className="hero-section animate-in-fade">
         <div className="hero-copy">
-          <span className="eyebrow">Your personal film index</span>
-          <h1>Find the next story worth your time.</h1>
-          <p>
+          <span className="eyebrow tracking-[0.18em]">Your personal film index</span>
+          <h1 className="text-balance">Find the next story worth your time.</h1>
+          <p className="max-w-xl text-pretty leading-relaxed text-[var(--text-muted)]">
             Search a living catalogue of cinema, then follow the threads from
-            one film to the next.
+            one film to the next — crafted for a premium, distraction-free
+            watchlist ritual.
           </p>
           <SearchBar
             value={term}
@@ -103,7 +104,7 @@ export default function HomePage() {
         <div className="section-heading">
           <div>
             <span className="eyebrow">Instant discovery</span>
-            <h2>
+            <h2 className="text-balance">
               {status === "success" && activeQuery
                 ? `Results for “${activeQuery}”`
                 : status === "loading"
@@ -146,7 +147,11 @@ export default function HomePage() {
               Try{" "}
               {SUGGESTIONS.map((title, index) => (
                 <span key={title}>
-                  {index > 0 ? (index === SUGGESTIONS.length - 1 ? ", or " : ", ") : null}
+                  {index > 0
+                    ? index === SUGGESTIONS.length - 1
+                      ? ", or "
+                      : ", "
+                    : null}
                   <button
                     className="inline-button"
                     type="button"

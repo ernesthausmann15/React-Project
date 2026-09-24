@@ -1,41 +1,54 @@
 "use client";
 
-interface AmbientBackgroundProps {
-  theme?: "light" | "dark";
-}
-
 /**
- * Fixed, non-interactive ambient layer with continuous soothing motion.
- * Lives at z-0 so all UI remains clickable above it.
- * Day mode uses a soft sky palette; night mode uses the cinematic crimson wash.
+ * Organic animated mesh / floating blob layer.
+ * Fixed at z-0 with pointer-events-none so UI stays fully interactive.
+ * Palette auto-adapts via Tailwind `dark:` variants (html.dark).
  */
-export default function AmbientBackground({
-  theme = "dark",
-}: AmbientBackgroundProps) {
+export default function AmbientBackground() {
   return (
     <div
-      className={`ambient-root pointer-events-none fixed inset-0 z-0 overflow-hidden ${
-        theme === "light" ? "ambient-day" : "ambient-night"
-      }`}
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
       aria-hidden="true"
     >
-      <div className="ambient-base absolute inset-0" />
-      <div className="ambient-aurora ambient-aurora-a absolute inset-[-20%]" />
-      <div className="ambient-aurora ambient-aurora-b absolute inset-[-20%]" />
-      <div className="ambient-mesh absolute inset-0" />
+      {/* Base wash */}
+      <div className="absolute inset-0 bg-[#eef5fb] transition-colors duration-700 dark:bg-[#0a0a0c]" />
 
-      <div className="ambient-orb ambient-orb-a absolute -left-[12%] top-[-8%] h-[58vmin] w-[58vmin] rounded-full" />
-      <div className="ambient-orb ambient-orb-b absolute -right-[10%] top-[18%] h-[50vmin] w-[50vmin] rounded-full" />
-      <div className="ambient-orb ambient-orb-c absolute bottom-[-18%] left-[28%] h-[62vmin] w-[62vmin] rounded-full" />
-      <div className="ambient-orb ambient-orb-d absolute left-[42%] top-[40%] h-[36vmin] w-[36vmin] rounded-full" />
+      {/* Soft gradient mesh */}
+      <div className="absolute inset-0 opacity-70 transition-opacity duration-700 dark:opacity-90 ambient-mesh-layer" />
 
-      <div className="ambient-sweep ambient-sweep-a absolute -left-1/4 top-0 h-full w-[55%] -skew-x-12" />
-      <div className="ambient-sweep ambient-sweep-b absolute -right-1/4 top-0 h-full w-[45%] skew-x-6" />
+      {/* Floating color blobs */}
+      <div
+        className="absolute -left-[12%] -top-[14%] h-[58vmax] w-[58vmax] rounded-full
+          bg-sky-400/40 blur-3xl dark:bg-[#E50914]/20
+          animate-blob-drift-a"
+      />
+      <div
+        className="absolute -right-[16%] top-[8%] h-[48vmax] w-[48vmax] rounded-full
+          bg-cyan-300/40 blur-3xl dark:bg-rose-700/20
+          animate-blob-drift-b"
+      />
+      <div
+        className="absolute bottom-[-22%] left-[18%] h-[62vmax] w-[62vmax] rounded-full
+          bg-amber-200/40 blur-3xl dark:bg-red-950/30
+          animate-blob-drift-c"
+      />
+      <div
+        className="absolute left-[38%] top-[36%] h-[34vmax] w-[34vmax] rounded-full
+          bg-indigo-300/30 blur-3xl dark:bg-[#E50914]/15
+          animate-blob-pulse"
+      />
+      <div
+        className="absolute right-[22%] bottom-[12%] h-[28vmax] w-[28vmax] rounded-full
+          bg-teal-300/35 blur-3xl dark:bg-orange-900/20
+          animate-blob-drift-d"
+      />
 
-      <div className="ambient-beam ambient-beam-a absolute inset-y-[-10%] left-[16%] w-px" />
-      <div className="ambient-beam ambient-beam-b absolute inset-y-[-10%] right-[28%] w-px" />
-      <div className="ambient-beam ambient-beam-c absolute inset-y-[-10%] left-[62%] w-px" />
+      {/* Light beams / sweeps */}
+      <div className="ambient-sweep ambient-sweep-a absolute -left-1/4 top-0 h-full w-[55%] -skew-x-12 opacity-60 dark:opacity-40" />
+      <div className="ambient-sweep ambient-sweep-b absolute -right-1/4 top-0 h-full w-[45%] skew-x-6 opacity-50 dark:opacity-30" />
 
+      {/* Rising motes */}
       <div className="ambient-motes absolute inset-0">
         <span className="ambient-mote ambient-mote-1" />
         <span className="ambient-mote ambient-mote-2" />
@@ -45,8 +58,12 @@ export default function AmbientBackground({
         <span className="ambient-mote ambient-mote-6" />
       </div>
 
-      <div className="ambient-vignette absolute inset-0" />
-      <div className="ambient-grain absolute inset-0 opacity-[0.04]" />
+      {/* Vignette + film grain */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_42%,rgba(226,239,247,0.55)_100%)]
+          transition-opacity duration-700 dark:bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(10,10,12,0.78)_100%)]"
+      />
+      <div className="ambient-grain absolute inset-0 opacity-[0.035] dark:opacity-[0.045]" />
     </div>
   );
 }

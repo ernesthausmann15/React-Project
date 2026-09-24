@@ -3,14 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
+import { useTheme } from "@/components/ThemeProvider";
+import { cn } from "@/lib/utils";
 
-interface NavbarProps {
-  theme: "light" | "dark";
-  onToggleTheme: () => void;
-}
-
-export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
+  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const closeMenu = () => setIsOpen(false);
@@ -27,9 +26,11 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
   return (
     <header
-      className={`site-header ${scrolled ? "is-scrolled" : ""} ${
-        theme === "light" ? "header-day" : "header-night"
-      }`}
+      className={cn(
+        "site-header",
+        scrolled && "is-scrolled",
+        theme === "light" ? "header-day" : "header-night",
+      )}
     >
       <div className="nav-ambient" aria-hidden="true">
         <span className="nav-sheen" />
@@ -51,7 +52,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
         </Link>
 
         <button
-          className={`menu-icon ${isOpen ? "is-open" : ""}`}
+          className={cn("menu-icon", isOpen && "is-open")}
           type="button"
           onClick={() => setIsOpen((open) => !open)}
           aria-expanded={isOpen}
@@ -73,19 +74,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
           >
             <span>02</span> Browse
           </Link>
-          <button
-            className={`theme-toggle ${theme === "dark" ? "is-dark" : "is-light"}`}
-            type="button"
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
-          >
-            <span className="toggle-track" aria-hidden="true">
-              <span className="toggle-orb" />
-            </span>
-            <span className="toggle-label">
-              {theme === "dark" ? "NIGHT" : "DAY"}
-            </span>
-          </button>
+          <ThemeToggle />
         </div>
       </nav>
 
