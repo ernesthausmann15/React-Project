@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import MovieModal from "../components/MovieModal";
@@ -11,7 +11,16 @@ export default function Home() {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const resultsRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (status !== "success") return;
+    // The hero is taller than a typical laptop viewport, so a finished search
+    // can leave every poster below the fold. Bringing the results section up
+    // is what makes the titles appear as soon as the request resolves.
+    resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [status]);
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -43,8 +52,8 @@ export default function Home() {
             <input
               value={term}
               onChange={(event) => setTerm(event.target.value)}
-              placeholder="Search titles, genres, or stars"
-              aria-label="Search movies"
+              placeholder="Search by title"
+              aria-label="Search by title"
             />
             <button className="primary-button" type="submit">
               Search <span aria-hidden="true">→</span>
@@ -63,6 +72,7 @@ export default function Home() {
         </div>
       </section>
       <section
+        ref={resultsRef}
         className="results-section"
         aria-live="polite"
         aria-busy={status === "loading"}

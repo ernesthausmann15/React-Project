@@ -388,6 +388,7 @@ a {
 .results-section,
 .related-section {
   padding-top: 78px;
+  scroll-margin-top: 96px;
 }
 .section-heading {
   display: flex;

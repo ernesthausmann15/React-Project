@@ -31,19 +31,24 @@ export default function MovieDetails() {
         const movieData = await getMovie(id, controller.signal);
         if (!active) return;
         setMovie(movieData);
-        // This second request demonstrates a dependent API call: the director
-        // is only known after the primary movie record has been retrieved.
+        // OMDB's search parameter matches titles, not people. A director name
+        // often comes back as "Movie not found!". That miss is optional context,
+        // so it must not replace the movie the user just opened from search.
         if (movieData.Director && movieData.Director !== "N/A") {
-          const relatedData = await searchByDirector(
-            movieData.Director.split(",")[0],
-            controller.signal,
-          );
-          if (active)
-            setRelated(
-              (relatedData.Search || [])
-                .filter((item) => item.imdbID !== id)
-                .slice(0, 4),
+          try {
+            const relatedData = await searchByDirector(
+              movieData.Director.split(",")[0],
+              controller.signal,
             );
+            if (active)
+              setRelated(
+                (relatedData.Search || [])
+                  .filter((item) => item.imdbID !== id)
+                  .slice(0, 4),
+              );
+          } catch (relatedError) {
+            if (relatedError.name === "AbortError") throw relatedError;
+          }
         }
         if (active) setStatus("success");
       } catch (requestError) {
