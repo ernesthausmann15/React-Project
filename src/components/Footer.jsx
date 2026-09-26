@@ -1,16 +1,18 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
+// Footer data is intentionally declarative: adding a destination only requires
+// one object, while the rendering and spacing rules stay shared.
 const footerLinks = [
   { label: "Home", to: "/" },
   { label: "Browse archive", to: "/movies" },
-] as const;
+];
 
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-grid">
         <div className="footer-brand">
-          <Link href="/" className="brand">
+          <Link to="/" className="brand">
             <span className="brand-mark">MG</span>
             <span>MovieGrab</span>
           </Link>
@@ -19,7 +21,7 @@ export default function Footer() {
         <div className="footer-column">
           <span className="footer-label">Navigate</span>
           {footerLinks.map((link) => (
-            <Link key={link.to} href={link.to}>
+            <Link key={link.to} to={link.to}>
               {link.label}
             </Link>
           ))}

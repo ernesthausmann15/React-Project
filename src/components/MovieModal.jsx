@@ -1,37 +1,23 @@
-"use client";
-
 import { useEffect } from "react";
-import type { Movie } from "@/types/movie";
 
-interface MovieModalProps {
-  movie: Movie | null;
-  onClose: () => void;
-}
-
-export default function MovieModal({ movie, onClose }: MovieModalProps) {
+export default function MovieModal({ movie, onClose }) {
   useEffect(() => {
     if (!movie) return undefined;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event) => {
       if (event.key === "Escape") onClose();
     };
-
     document.addEventListener("keydown", handleKeyDown);
     document.body.classList.add("modal-open");
-
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.classList.remove("modal-open");
     };
   }, [movie, onClose]);
-
   if (!movie) return null;
-
   const poster =
     movie.Poster !== "N/A"
       ? movie.Poster
       : "https://placehold.co/600x900/17202a/e8f0f2?text=No+Poster";
-
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
       <section
@@ -49,7 +35,6 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
         >
           &times;
         </button>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={poster} alt={`${movie.Title} poster`} />
         <div className="modal-content">
           <span className="eyebrow">Quick preview</span>
